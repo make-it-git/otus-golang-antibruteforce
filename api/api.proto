@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option go_package = "./pb;api";
+
+import "google/protobuf/empty.proto";
+
+message SubnetAddress {
+  string subnetAddress = 1;
+}
+
+message AuthCheckRequest {
+  string login = 1;
+  string password = 2;
+  string ip = 3;
+}
+
+message AuthCheckResponse {
+  bool accepted = 1;
+}
+
+service AntiBruteforce {
+  rpc BlackListExtend (SubnetAddress) returns (google.protobuf.Empty);
+  rpc BlackListRemove (SubnetAddress) returns (google.protobuf.Empty);
+  rpc WhiteListAdd (SubnetAddress) returns (google.protobuf.Empty);
+  rpc WhiteListRemove (SubnetAddress) returns (google.protobuf.Empty);
+  rpc ClearLists (google.protobuf.Empty) returns (google.protobuf.Empty);
+  rpc AuthCheck(AuthCheckRequest) returns (AuthCheckResponse);
+}
