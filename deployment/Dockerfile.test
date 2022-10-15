@@ -1,0 +1,9 @@
+FROM golang:1.18 as modcache
+WORKDIR /modcache
+COPY go.mod go.sum /modcache/
+RUN go mod download
+
+FROM golang:1.18 AS builder
+WORKDIR /app
+COPY --from=modcache /go/pkg /go/pkg
+COPY . /app
